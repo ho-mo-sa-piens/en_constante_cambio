@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Portfolio Personal</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent: #2dd4a0;
+      --accent-dim: #1a9e76;
+      --bg: #0e0e10;
+      --bg-card: #141416;
+      --bg-input: #1a1a1f;
+      --border: #2a2a2e;
+      --text: #e8e6e1;
+      --text-muted: #7a7a74;
+      --text-dim: #9a9890;
+      --text-hint: #555;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── LAYOUT ── */
+    .wrapper {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    .accent { color: var(--accent); }
+    .divider { border: none; border-top: 0.5px solid var(--border); margin: 2.5rem 0; }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 1.2rem;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      display: flex;
+      align-items: flex-start;
+      gap: 2rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 0.5px solid var(--border);
+      margin-bottom: 2.5rem;
+    }
+
+    .photo-wrap { flex-shrink: 0; text-align: center; }
+
+    .photo-circle {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: var(--bg-input);
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .photo-circle:hover { border-color: var(--accent-dim); }
+    .photo-circle img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+
+    .photo-placeholder { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+    .photo-placeholder i { font-size: 30px; color: var(--accent); }
+    .photo-placeholder span { font-size: 10px; color: var(--text-hint); text-align: center; }
+    .photo-hint { font-size: 11px; color: var(--text-hint); margin-top: 7px; }
+    #photo-input { display: none; }
+
+    .hero-info { flex: 1; }
+    .hero-name { font-size: 30px; font-weight: 500; line-height: 1.2; margin-bottom: 6px; }
+    .hero-role { font-size: 15px; color: var(--text-muted); margin-bottom: 12px; }
+    .hero-bio { font-size: 14px; color: var(--text-dim); line-height: 1.75; max-width: 460px; }
+    .edit-btn {
+      margin-top: 12px;
+      background: transparent;
+      border: 0.5px solid var(--border);
+      color: var(--text-muted);
+      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .edit-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── SECCIÓN ESTUDIOS ── */
+    .edu-item { display: flex; gap: 1rem; margin-bottom: 1.3rem; }
+    .edu-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); margin-top: 5px; flex-shrink: 0; }
+    .edu-title { font-size: 14px; font-weight: 500; }
+    .edu-sub { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
+    .edu-year { font-size: 12px; color: var(--accent); margin-top: 3px; }
+
+    /* ── EXPERIENCIA ── */
+    .exp-item {
+      background: var(--bg-card);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.1rem;
+      margin-bottom: 0.9rem;
+    }
+    .exp-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+    .exp-role { font-size: 14px; font-weight: 500; }
+    .exp-period { font-size: 12px; color: var(--accent); white-space: nowrap; }
+    .exp-company { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
+    .exp-desc { font-size: 13px; color: var(--text-dim); margin-top: 8px; line-height: 1.6; }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+    }
+    .skill-card {
+      background: var(--bg-card);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+    }
+    .skill-name { font-size: 13px; font-weight: 500; margin-bottom: 8px; }
+    .skill-bar-bg { height: 3px; background: var(--border); border-radius: 2px; }
+    .skill-bar-fill { height: 3px; border-radius: 2px; background: var(--accent); }
+
+    /* ── HOBBIES ── */
+    .hobbies-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+    .hobby-tag {
+      background: var(--bg-card);
+      border: 0.5px solid var(--border);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: #c0beba;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .hobby-tag i { font-size: 15px; color: var(--accent); }
+
+    /* ── CONTACTO ── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+    }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-card);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+    }
+    .contact-item i { font-size: 20px; color: var(--accent); flex-shrink: 0; }
+    .contact-label { font-size: 11px; color: var(--text-hint); }
+    .contact-val { font-size: 13px; color: var(--text); margin-top: 2px; word-break: break-all; }
+
+    /* ── ADD BTN ── */
+    .add-btn {
+      background: var(--bg-input);
+      border: 0.5px dashed #3a3a3e;
+      color: var(--text-hint);
+      font-size: 13px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      width: 100%;
+      text-align: left;
+      margin-top: 8px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .add-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── MODAL ── */
+    .modal-bg {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-bg.open { display: flex; }
+    .modal {
+      background: #18181c;
+      border: 0.5px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      width: 340px;
+      max-width: 92vw;
+    }
+    .modal h3 { font-size: 15px; font-weight: 500; margin-bottom: 1rem; }
+    .modal input,
+    .modal textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 13px;
+      font-family: inherit;
+      margin-bottom: 8px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .modal input:focus,
+    .modal textarea:focus { border-color: var(--accent); }
+    .modal textarea { resize: vertical; min-height: 72px; }
+    .modal label { font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 4px; }
+    .modal-btns { display: flex; gap: 8px; justify-content: flex-end; margin-top: 6px; }
+    .btn-cancel {
+      background: transparent;
+      border: 0.5px solid var(--border);
+      color: var(--text-muted);
+      padding: 7px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-family: inherit;
+    }
+    .btn-save {
+      background: var(--accent);
+      border: none;
+      color: #0e0e10;
+      padding: 7px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: inherit;
+    }
+    .btn-save:hover { background: var(--accent-dim); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 520px) {
+      .hero { flex-direction: column; align-items: center; text-align: center; }
+      .hero-bio { max-width: 100%; }
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <!-- ── HERO ── -->
+  <div class="hero">
+    <div class="photo-wrap">
+      <div class="photo-circle" id="photo-circle" onclick="document.getElementById('photo-input').click()" title="Clic para cargar tu foto">
+        <div class="photo-placeholder" id="photo-ph">
+          <i class="ti ti-camera"></i>
+          <span>Tu foto</span>
+        </div>
+      </div>
+      <div class="photo-hint">Clic para cargar</div>
+      <input type="file" id="photo-input" accept="image/*">
+    </div>
+
+    <div class="hero-info">
+      <div class="hero-name" id="hero-name">Tu nombre aquí</div>
+      <div class="hero-role" id="hero-title">Tu profesión / título</div>
+      <div class="hero-bio" id="hero-bio">Una breve descripción sobre vos: quién sos, qué hacés y qué te apasiona. Hacé clic en "Editar presentación" para personalizarla.</div>
+      <button class="edit-btn" onclick="openModal('hero')">
+        <i class="ti ti-edit"></i> Editar presentación
+      </button>
+    </div>
+  </div>
+
+  <!-- ── ESTUDIOS ── -->
+  <section>
+    <div class="section-label">Formación</div>
+    <div class="section-title">Estudios</div>
+    <div id="edu-list">
+      <div class="edu-item">
+        <div class="edu-dot"></div>
+        <div>
+          <div class="edu-title">Nombre del título o carrera</div>
+          <div class="edu-sub">Institución educativa</div>
+          <div class="edu-year">2020 – 2024</div>
+        </div>
+      </div>
+    </div>
+    <button class="add-btn" onclick="openModal('edu')">
+      <i class="ti ti-plus"></i> Agregar estudio
+    </button>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── EXPERIENCIA ── -->
+  <section>
+    <div class="section-label">Trayectoria</div>
+    <div class="section-title">Experiencia laboral</div>
+    <div id="exp-list">
+      <div class="exp-item">
+        <div class="exp-top">
+          <div class="exp-role">Nombre del cargo</div>
+          <div class="exp-period">2022 – hoy</div>
+        </div>
+        <div class="exp-company">Empresa o proyecto</div>
+        <div class="exp-desc">Descripción breve de tus responsabilidades y logros en este rol.</div>
+      </div>
+    </div>
+    <button class="add-btn" onclick="openModal('exp')">
+      <i class="ti ti-plus"></i> Agregar experiencia
+    </button>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── SKILLS ── -->
+  <section>
+    <div class="section-label">Competencias</div>
+    <div class="section-title">Habilidades</div>
+    <div class="skills-grid" id="skills-grid">
+      <div class="skill-card">
+        <div class="skill-name">Habilidad 1</div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:85%"></div></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">Habilidad 2</div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:70%"></div></div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-name">Habilidad 3</div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:60%"></div></div>
+      </div>
+    </div>
+    <button class="add-btn" onclick="openModal('skill')">
+      <i class="ti ti-plus"></i> Agregar habilidad
+    </button>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── HOBBIES ── -->
+  <section>
+    <div class="section-label">Intereses</div>
+    <div class="section-title">Hobbies y preferencias</div>
+    <div class="hobbies-wrap" id="hobbies-wrap">
+      <div class="hobby-tag"><i class="ti ti-music"></i> Música</div>
+      <div class="hobby-tag"><i class="ti ti-book"></i> Lectura</div>
+      <div class="hobby-tag"><i class="ti ti-camera"></i> Fotografía</div>
+    </div>
+    <button class="add-btn" onclick="openModal('hobby')">
+      <i class="ti ti-plus"></i> Agregar hobby
+    </button>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── CONTACTO ── -->
+  <section>
+    <div class="section-label">Encontrame en</div>
+    <div class="section-title">Contacto</div>
+    <div class="contact-grid">
+      <div class="contact-item">
+        <i class="ti ti-mail"></i>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-val" id="c-email">tucorreo@ejemplo.com</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <i class="ti ti-brand-linkedin"></i>
+        <div>
+          <div class="contact-label">LinkedIn</div>
+          <div class="contact-val" id="c-linkedin">tu-perfil</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <i class="ti ti-brand-github"></i>
+        <div>
+          <div class="contact-label">GitHub</div>
+          <div class="contact-val" id="c-github">tu-usuario</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <i class="ti ti-phone"></i>
+        <div>
+          <div class="contact-label">Teléfono</div>
+          <div class="contact-val" id="c-phone">+54 ...</div>
+        </div>
+      </div>
+    </div>
+    <button class="add-btn" onclick="openModal('contact')">
+      <i class="ti ti-edit"></i> Editar contacto
+    </button>
+  </section>
+
+</div><!-- /wrapper -->
+
+<!-- ── MODAL ── -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal" id="modal-box"></div>
+</div>
+
+<script>
+  const $ = id => document.getElementById(id);
+
+  // ── FOTO ──
+  $('photo-input').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      $('photo-ph').style.display = 'none';
+      let img = $('photo-circle').querySelector('img');
+      if (!img) { img = document.createElement('img'); $('photo-circle').appendChild(img); }
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // ── MODALES ──
+  function openModal(type) {
+    const box = $('modal-box');
+    let html = '';
+
+    if (type === 'hero') {
+      html = `<h3>Editar presentación</h3>
+        <input id="m-name" placeholder="Nombre completo" value="${$('hero-name').textContent}">
+        <input id="m-title" placeholder="Profesión / título" value="${$('hero-title').textContent}">
+        <textarea id="m-bio" placeholder="Descripción personal">${$('hero-bio').textContent}</textarea>
+        <div class="modal-btns">
+          <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+          <button class="btn-save" onclick="saveHero()">Guardar</button>
+        </div>`;
+
+    } else if (type === 'edu') {
+      html = `<h3>Agregar estudio</h3>
+        <input id="m-etitle" placeholder="Título o carrera">
+        <input id="m-einst" placeholder="Institución">
+        <input id="m-eyear" placeholder="Período (ej: 2019 – 2023)">
+        <div class="modal-btns">
+          <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+          <button class="btn-save" onclick="saveEdu()">Agregar</button>
+        </div>`;
+
+    } else if (type === 'exp') {
+      html = `<h3>Agregar experiencia</h3>
+        <input id="m-erole" placeholder="Cargo o rol">
+        <input id="m-ecomp" placeholder="Empresa o proyecto">
+        <input id="m-eperiod" placeholder="Período (ej: 2022 – hoy)">
+        <textarea id="m-edesc" placeholder="Descripción breve de tus tareas y logros"></textarea>
+        <div class="modal-btns">
+          <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+          <button class="btn-save" onclick="saveExp()">Agregar</button>
+        </div>`;
+
+    } else if (type === 'skill') {
+      html = `<h3>Agregar habilidad</h3>
+        <input id="m-sname" placeholder="Nombre de la habilidad">
+        <label>Nivel de dominio</label>
+        <input type="range" id="m-slevel" min="10" max="100" value="75" style="width:100%;margin-bottom:10px">
+        <div class="modal-btns">
+          <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+          <button class="btn-save" onclick="saveSkill()">Agregar</button>
+        </div>`;
+
+    } else if (type === 'hobby') {
+      html = `<h3>Agregar hobby / interés</h3>
+        <input id="m-hobby" placeholder="Ej: Cocina, Ciclismo, Gaming...">
+        <div class="modal-btns">
+          <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+          <button class="btn-save" onclick="saveHobby()">Agregar</button>
+        </div>`;
+
+    } else if (type === 'contact') {
+      html = `<h3>Editar contacto</h3>
+        <input id="m-cemail" placeholder="Email" value="${$('c-email').textContent}">
+        <input id="m-clink" placeholder="LinkedIn (usuario o URL)" value="${$('c-linkedin').textContent}">
+        <input id="m-cgit" placeholder="GitHub (usuario)" value="${$('c-github').textContent}">
+        <input id="m-cphone" placeholder="Teléfono" value="${$('c-phone').textContent}">
+        <div class="modal-btns">
+          <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+          <button class="btn-save" onclick="saveContact()">Guardar</button>
+        </div>`;
+    }
+
+    box.innerHTML = html;
+    $('modal-bg').classList.add('open');
+  }
+
+  function closeModal() { $('modal-bg').classList.remove('open'); }
+
+  $('modal-bg').addEventListener('click', e => {
+    if (e.target === $('modal-bg')) closeModal();
+  });
+
+  // ── GUARDAR ──
+  function saveHero() {
+    const n = $('m-name').value.trim();
+    const t = $('m-title').value.trim();
+    const b = $('m-bio').value.trim();
+    if (n) $('hero-name').textContent = n;
+    if (t) $('hero-title').textContent = t;
+    if (b) $('hero-bio').textContent = b;
+    closeModal();
+  }
+
+  function saveEdu() {
+    const t = $('m-etitle').value.trim();
+    if (!t) return;
+    const i = $('m-einst').value.trim();
+    const y = $('m-eyear').value.trim();
+    const div = document.createElement('div');
+    div.className = 'edu-item';
+    div.innerHTML = `
+      <div class="edu-dot"></div>
+      <div>
+        <div class="edu-title">${t}</div>
+        <div class="edu-sub">${i}</div>
+        <div class="edu-year">${y}</div>
+      </div>`;
+    $('edu-list').appendChild(div);
+    closeModal();
+  }
+
+  function saveExp() {
+    const r = $('m-erole').value.trim();
+    if (!r) return;
+    const c = $('m-ecomp').value.trim();
+    const p = $('m-eperiod').value.trim();
+    const d = $('m-edesc').value.trim();
+    const div = document.createElement('div');
+    div.className = 'exp-item';
+    div.innerHTML = `
+      <div class="exp-top">
+        <div class="exp-role">${r}</div>
+        <div class="exp-period">${p}</div>
+      </div>
+      <div class="exp-company">${c}</div>
+      <div class="exp-desc">${d}</div>`;
+    $('exp-list').appendChild(div);
+    closeModal();
+  }
+
+  function saveSkill() {
+    const n = $('m-sname').value.trim();
+    if (!n) return;
+    const l = $('m-slevel').value;
+    const div = document.createElement('div');
+    div.className = 'skill-card';
+    div.innerHTML = `
+      <div class="skill-name">${n}</div>
+      <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:${l}%"></div></div>`;
+    $('skills-grid').appendChild(div);
+    closeModal();
+  }
+
+  function saveHobby() {
+    const h = $('m-hobby').value.trim();
+    if (!h) return;
+    const div = document.createElement('div');
+    div.className = 'hobby-tag';
+    div.innerHTML = `<i class="ti ti-star"></i> ${h}`;
+    $('hobbies-wrap').appendChild(div);
+    closeModal();
+  }
+
+  function saveContact() {
+    $('c-email').textContent  = $('m-cemail').value.trim();
+    $('c-linkedin').textContent = $('m-clink').value.trim();
+    $('c-github').textContent = $('m-cgit').value.trim();
+    $('c-phone').textContent  = $('m-cphone').value.trim();
+    closeModal();
+  }
+</script>
+</body>
+</html>
